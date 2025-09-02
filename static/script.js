@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData();
         if (fileInput.files.length === 0) {
-            alert('Please select a file to upload.');
+            alert('請選擇要上傳的檔案。');
             return;
         }
         formData.append('file', fileInput.files[0]);
@@ -23,13 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('網路回應不正常');
             }
 
             const data = await response.json();
 
             if (data.error) {
-                alert('Error: ' + data.error);
+                alert('錯誤: ' + data.error);
                 return;
             }
 
@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
         } catch (error) {
-            console.error('Error uploading file:', error);
-            alert('An error occurred while uploading the file.');
+            console.error('上傳檔案時發生錯誤:', error);
+            alert('上傳檔案時發生錯誤。');
         }
     });
 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 slot.appendChild(draggedItem);
 
                 if (checkWinCondition()) {
-                    setTimeout(() => alert('Congratulations! You solved the puzzle!'), 100);
+                    setTimeout(() => alert('恭喜！你完成了拼圖！'), 100);
                 }
             }
         });

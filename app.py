@@ -16,10 +16,10 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload_image():
     if 'file' not in request.files:
-        return jsonify({'error': 'No file part'}), 400
+        return jsonify({'error': '沒有檔案部分'}), 400
     file = request.files['file']
     if file.filename == '':
-        return jsonify({'error': 'No selected file'}), 400
+        return jsonify({'error': '未選擇檔案'}), 400
 
     if file:
         filename = str(uuid.uuid4()) + os.path.splitext(file.filename)[1]

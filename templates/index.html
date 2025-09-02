@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Puzzle</title>
+    <title>圖片拼圖</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Image Puzzle</h1>
+    <h1>圖片拼圖</h1>
     <form id="upload-form" enctype="multipart/form-data">
         <input type="file" id="file-input" name="file" accept="image/*">
-        <button type="submit">Upload and Split</button>
+        <button type="submit">上傳並切割</button>
     </form>
     <div id="puzzle-container"></div>
     <div id="puzzle-board">
-        <h2>Puzzle Board</h2>
+        <h2>拼圖板</h2>
         <div class="puzzle-grid">
              <div class="puzzle-slot" data-id="0-0"></div>
              <div class="puzzle-slot" data-id="0-1"></div>
