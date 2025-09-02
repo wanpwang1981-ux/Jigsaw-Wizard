@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, url_for
 from PIL import Image
 import uuid
 
@@ -40,7 +40,9 @@ def upload_image():
                     piece_filename = f'piece_{i}_{j}_{filename}'
                     piece_path = os.path.join(app.config['UPLOAD_FOLDER'], piece_filename)
                     piece.save(piece_path)
-                    pieces.append(f'/{piece_path}')
+                    piece_id = f'{i}-{j}'
+                    piece_url = url_for('static', filename=f'uploads/{piece_filename}')
+                    pieces.append({'id': piece_id, 'src': piece_url})
 
             return jsonify({'pieces': pieces})
         except Exception as e:

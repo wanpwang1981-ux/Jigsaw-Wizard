@@ -38,9 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Shuffle pieces before displaying
             const shuffledPieces = data.pieces.sort(() => Math.random() - 0.5);
 
-            shuffledPieces.forEach(src => {
+            shuffledPieces.forEach(pieceData => {
                 const piece = document.createElement('img');
-                piece.src = src + '?t=' + new Date().getTime(); // Prevent caching
+                piece.src = pieceData.src + '?t=' + new Date().getTime(); // Prevent caching
+                piece.dataset.id = pieceData.id;
                 piece.classList.add('puzzle-piece');
                 piece.draggable = true;
                 addDragEvents(piece);
@@ -82,12 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
         slot.addEventListener('drop', (e) => {
             e.preventDefault();
             slot.classList.remove('over');
-            if (draggedItem && !slot.hasChildNodes()) { // Allow drop only if slot is empty
-                // Return any existing piece in the slot back to the container
+            if (draggedItem && !slot.hasChildNodes()) {
                 if (slot.firstChild) {
                     puzzleContainer.appendChild(slot.firstChild);
                 }
                 slot.appendChild(draggedItem);
+
+                if (checkWinCondition()) {
+                    setTimeout(() => alert('Congratulations! You solved the puzzle!'), 100);
+                }
             }
         });
     });
@@ -103,4 +107,15 @@ document.addEventListener('DOMContentLoaded', () => {
             puzzleContainer.appendChild(draggedItem);
         }
     });
+
+    function checkWinCondition() {
+        let solved = true;
+        puzzleSlots.forEach(slot => {
+            const piece = slot.querySelector('.puzzle-piece');
+            if (!piece || piece.dataset.id !== slot.dataset.id) {
+                solved = false;
+            }
+        });
+        return solved;
+    }
 });
