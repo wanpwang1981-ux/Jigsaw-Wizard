@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('upload-form');
     const fileInput = document.getElementById('file-input');
+    const pieceCountSelect = document.getElementById('piece-count');
     const puzzleContainer = document.getElementById('puzzle-container');
-    const puzzleSlots = document.querySelectorAll('.puzzle-slot');
+    const puzzleBoard = document.querySelector('.puzzle-grid');
 
     let draggedItem = null;
 
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         formData.append('file', fileInput.files[0]);
+        formData.append('piece_count', pieceCountSelect.value);
 
         try {
             const response = await fetch('/upload', {
@@ -32,6 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('錯誤: ' + data.error);
                 return;
             }
+
+            setupPuzzleBoard(data.cols);
 
             puzzleContainer.innerHTML = ''; // Clear previous puzzle pieces
 
@@ -70,18 +74,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    puzzleSlots.forEach(slot => {
-        slot.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            slot.classList.add('over');
-        });
+    function setupPuzzleBoard(cols) {
+        puzzleBoard.innerHTML = ''; // Clear existing board
+        puzzleBoard.style.gridTemplateColumns = `repeat(${cols}, 100px)`;
+        puzzleBoard.style.gridTemplateRows = `repeat(${cols}, 100px)`;
 
-        slot.addEventListener('dragleave', () => {
-            slot.classList.remove('over');
-        });
+        for (let i = 0; i < cols; i++) {
+            for (let j = 0; j < cols; j++) {
+                const slot = document.createElement('div');
+                slot.classList.add('puzzle-slot');
+                slot.dataset.id = `${i}-${j}`;
+                puzzleBoard.appendChild(slot);
+            }
+        }
+    }
 
-        slot.addEventListener('drop', (e) => {
-            e.preventDefault();
+    puzzleBoard.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (e.target.classList.contains('puzzle-slot')) {
+            e.target.classList.add('over');
+        }
+    });
+
+    puzzleBoard.addEventListener('dragleave', (e) => {
+        if (e.target.classList.contains('puzzle-slot')) {
+            e.target.classList.remove('over');
+        }
+    });
+
+    puzzleBoard.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const slot = e.target;
+        if (slot.classList.contains('puzzle-slot')) {
             slot.classList.remove('over');
             if (draggedItem && !slot.hasChildNodes()) {
                 if (slot.firstChild) {
@@ -93,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => alert('恭喜！你完成了拼圖！'), 100);
                 }
             }
-        });
+        }
     });
 
     // Allow dropping pieces back into the container
@@ -109,13 +133,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function checkWinCondition() {
-        let solved = true;
-        puzzleSlots.forEach(slot => {
+        const slots = puzzleBoard.querySelectorAll('.puzzle-slot');
+        for (const slot of slots) {
             const piece = slot.querySelector('.puzzle-piece');
             if (!piece || piece.dataset.id !== slot.dataset.id) {
-                solved = false;
+                return false; // Not solved
             }
-        });
-        return solved;
+        }
+        return true; // All pieces are in the correct slots
     }
 });
