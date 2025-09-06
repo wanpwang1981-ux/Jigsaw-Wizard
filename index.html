@@ -9,15 +9,22 @@
 <body>
     <h1>照片拼圖遊戲</h1>
     <div class="controls">
-        <p>1. 選擇難度：</p>
-        <select id="difficultySelector">
-            <option value="3">簡單 (3x3)</option>
-            <option value="4">中等 (4x4)</option>
-            <option value="5">困難 (5x5)</option>
-        </select>
-        <p style="margin-top: 15px;">2. 選擇一張圖片開始遊戲：</p>
-        <input type="file" id="imageLoader" name="imageLoader" accept="image/*"/>
-        <button id="startCamera">使用相機</button>
+        <div>
+            <p>1. 選擇難度：</p>
+            <select id="difficultySelector">
+                <option value="3">簡單 (3x3)</option>
+                <option value="4">中等 (4x4)</option>
+                <option value="5">困難 (5x5)</option>
+            </select>
+        </div>
+        <div>
+            <p style="margin-top: 15px;">2. 選擇一張圖片開始遊戲：</p>
+            <input type="file" id="imageLoader" name="imageLoader" accept="image/*"/>
+            <button id="startCamera">使用相機</button>
+        </div>
+        <div class="sound-control">
+            <button id="muteBtn">靜音</button>
+        </div>
     </div>
 
     <!-- 相機預覽區 -->
@@ -31,11 +38,12 @@
 
     <!-- 遊戲區 -->
     <div id="game-container">
-        <div id="puzzle-container"></div>
+        <canvas id="game-canvas"></canvas>
         <div id="original-image-container">
              <h3>原圖參考</h3>
              <canvas id="original-canvas"></canvas>
              <button id="resetBtn" class="hidden">重置遊戲</button>
+             <button id="solveBtn" class="hidden">自動拼圖</button>
         </div>
     </div>
 
@@ -44,6 +52,12 @@
         <h2>恭喜你，挑戰成功！</h2>
         <button id="play-again">再玩一次</button>
     </div>
+
+    <!-- Audio Elements -->
+    <audio id="bgMusic" src="audio/music.mp3" loop></audio>
+    <audio id="pickupSound" src="audio/pickup.wav"></audio>
+    <audio id="dropSound" src="audio/drop.wav"></audio>
+    <audio id="winSound" src="audio/win.wav"></audio>
 
     <script src="script.js"></script>
 </body>
