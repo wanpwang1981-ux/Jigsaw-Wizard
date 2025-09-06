@@ -9,7 +9,13 @@
 <body>
     <h1>照片拼圖遊戲</h1>
     <div class="controls">
-        <p>選擇一張圖片開始遊戲：</p>
+        <p>1. 選擇難度：</p>
+        <select id="difficultySelector">
+            <option value="3">簡單 (3x3)</option>
+            <option value="4">中等 (4x4)</option>
+            <option value="5">困難 (5x5)</option>
+        </select>
+        <p style="margin-top: 15px;">2. 選擇一張圖片開始遊戲：</p>
         <input type="file" id="imageLoader" name="imageLoader" accept="image/*"/>
         <button id="startCamera">使用相機</button>
     </div>
@@ -29,6 +35,7 @@
         <div id="original-image-container">
              <h3>原圖參考</h3>
              <canvas id="original-canvas"></canvas>
+             <button id="resetBtn" class="hidden">重置遊戲</button>
         </div>
     </div>
 

@@ -38,6 +38,15 @@ button:hover {
     background-color: #166fe5;
 }
 
+#resetBtn {
+    background-color: #e74c3c; /* A red color for reset/exit */
+    width: 100%;
+}
+
+#resetBtn:hover {
+    background-color: #c0392b;
+}
+
 input[type="file"] {
     margin-top: 10px;
 }

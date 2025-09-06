@@ -6,10 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const cameraVideo = document.getElementById('camera-video');
     const captureBtn = document.getElementById('captureBtn');
     const cancelCameraBtn = document.getElementById('cancelCamera');
+    const difficultySelector = document.getElementById('difficultySelector');
     const puzzleContainer = document.getElementById('puzzle-container');
     const originalCanvas = document.getElementById('original-canvas');
     const winMessage = document.getElementById('win-message');
     const playAgainBtn = document.getElementById('play-again');
+    const resetBtn = document.getElementById('resetBtn');
 
     const originalCtx = originalCanvas.getContext('2d');
     let pieces = [];
@@ -24,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelCameraBtn.addEventListener('click', stopCamera);
     captureBtn.addEventListener('click', capturePhoto);
     playAgainBtn.addEventListener('click', resetGame);
+    resetBtn.addEventListener('click', resetGame);
 
     // --- Image & Camera Handling ---
     function handleImageUpload(e) {
@@ -75,20 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Game Logic ---
     function startGame(img) {
-        // "智慧"切割邏輯：根據圖片長寬比調整網格
-        const aspectRatio = img.width / img.height;
-        if (aspectRatio > 1.2) { // 寬圖
-            puzzleSize = 4;
-        } else if (aspectRatio < 0.8) { // 長圖
-            puzzleSize = 3;
-        } else { // 方形圖
-            puzzleSize = 3;
-        }
-        // 為了簡化，我們先用固定的 3x3
-        puzzleSize = 3;
+        // Read puzzle size from the difficulty selector
+        puzzleSize = parseInt(difficultySelector.value, 10);
 
         // 設置畫布尺寸
         const maxDisplayWidth = 600;
+        const aspectRatio = img.width / img.height;
         originalCanvas.width = Math.min(img.width, maxDisplayWidth);
         originalCanvas.height = originalCanvas.width / aspectRatio;
         originalCtx.drawImage(img, 0, 0, originalCanvas.width, originalCanvas.height);
@@ -98,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         sliceAndShuffle();
         document.querySelector('.controls').classList.add('hidden');
+        resetBtn.classList.remove('hidden');
     }
 
     function sliceAndShuffle() {
@@ -217,5 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
         originalCtx.clearRect(0, 0, originalCanvas.width, originalCanvas.height);
         document.querySelector('.controls').classList.remove('hidden');
         imageLoader.value = ''; // Reset file input
+        resetBtn.classList.add('hidden');
     }
 });
