@@ -1,0 +1,7 @@
+{
+  "name": "照片拼圖遊戲",
+  "description": "一款適合您手機的有趣拼圖遊戲。上傳您自己的照片或自拍，建立並解決自訂拼圖！",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
